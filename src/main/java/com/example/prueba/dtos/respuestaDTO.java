@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @Setter
-public class respuestaDTO<T>{
+public class RespuestaDTO<T>{
     private int codigo;
     private String mensaje;
     private T resultado;

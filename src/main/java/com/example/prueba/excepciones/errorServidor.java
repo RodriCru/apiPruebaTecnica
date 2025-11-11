@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * en el servidor
  */
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-public class errorServidor extends RuntimeException{
-    public errorServidor(String mensaje){ super(mensaje);}
+public class ErrorServidor extends RuntimeException{
+    public ErrorServidor(String mensaje){ super(mensaje);}
        
 }

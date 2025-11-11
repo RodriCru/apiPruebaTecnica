@@ -24,15 +24,19 @@ import java.time.OffsetDateTime;
 import com.example.prueba.dtos.*;
 import com.example.prueba.dtos.empleados.*;
 import com.example.prueba.excepciones.*;
-import com.example.prueba.modelos.empleado;
-import com.example.prueba.repositorio.empleadoRepositorio;
-import com.example.prueba.servicios.empleadoServices;
+import com.example.prueba.modelos.Empleado;
+import com.example.prueba.repositorio.EmpleadoRepositorio;
+import com.example.prueba.servicios.EmpleadoServices;
+import com.example.prueba.jwt.*;
 
 @Service
 @RequiredArgsConstructor
-public class empleadoServiciosImpl implements empleadoServices {
-    private final empleadoRepositorio empleadoRepositorio;
+public class EmpleadoServiciosImpl implements EmpleadoServices {
+    private final EmpleadoRepositorio empleadoRepositorio;
+    private final AuthenticationManager authenticationManager;
+    private final ServicioJwt jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final TokenBlacklist tokenBlacklist;
 
     /**
      * Crea un nuevo usuario a partir de un objeto UserDTO.
@@ -48,7 +52,7 @@ public class empleadoServiciosImpl implements empleadoServices {
      * @throws creacionFallida Si algún campo obligatorio está vacío.
     */
     @Override
-    public respuestaDTO<empleadoCreacionDTO> creaEmpleado(creaEmpleadoDTO creaEmpleadoDTO){
+    public RespuestaDTO<EmpleadoCreacionDTO> creaEmpleado(CreaEmpleadoDTO creaEmpleadoDTO){
         try {
             if(creaEmpleadoDTO.getNombre() == null
                 || creaEmpleadoDTO.getApellidoP() == null
@@ -59,18 +63,18 @@ public class empleadoServiciosImpl implements empleadoServices {
                 || creaEmpleadoDTO.getUsuario() == null
                 || creaEmpleadoDTO.getContrasena() == null
             ){
-                throw new errorCreacion("Datos invalidos.");
+                throw new ErrorCreacion("Datos invalidos.");
             }
 
-            if (empleadoRepositorio.findByEmail(creaEmpleadoDTO.getCorreo()).isPresent()){
-                throw new datosDucplicados("El correo ya existe.");
+            if (empleadoRepositorio.findByCorreo(creaEmpleadoDTO.getCorreo()).isPresent()){
+                throw new DatosDucplicados("El correo ya existe.");
             }
 
-            if(empleadoRepositorio.findByUsername(creaEmpleadoDTO.getUsuario()).isPresent()){
-                throw new datosDucplicados("El usuario ya existe.");
+            if(empleadoRepositorio.findByUsuario(creaEmpleadoDTO.getUsuario()).isPresent()){
+                throw new DatosDucplicados("El usuario ya existe.");
             }
 
-            empleado empleado = new empleado();
+            Empleado empleado = new Empleado();
             empleado.setNombre(creaEmpleadoDTO.getNombre());
             empleado.setApellidoP(creaEmpleadoDTO.getApellidoP());
             empleado.setApellidoM(creaEmpleadoDTO.getApellidoM());
@@ -92,7 +96,7 @@ public class empleadoServiciosImpl implements empleadoServices {
 
             empleado = empleadoRepositorio.save(empleado);
 
-            empleadoCreacionDTO nuevoEmpleadoDTO = new empleadoCreacionDTO();
+            EmpleadoCreacionDTO nuevoEmpleadoDTO = new EmpleadoCreacionDTO();
             nuevoEmpleadoDTO.setId(empleado.getId());
             nuevoEmpleadoDTO.setNombre(empleado.getNombre());
             nuevoEmpleadoDTO.setApellidoP(empleado.getApellidoP());
@@ -100,13 +104,13 @@ public class empleadoServiciosImpl implements empleadoServices {
             nuevoEmpleadoDTO.setCorreo(empleado.getCorreo());
             nuevoEmpleadoDTO.setUsuario(empleado.getUsuario());
 
-            return new respuestaDTO<empleadoCreacionDTO>(201, "Empleado creado correctamente.", nuevoEmpleadoDTO);
-        } catch (errorCreacion e) {
-            throw new errorCreacion("Datos invalidos.");
-        } catch (datosDucplicados e){
-            throw new datosDucplicados("El usuario ya existe.");
+            return new RespuestaDTO<EmpleadoCreacionDTO>(201, "Empleado creado correctamente.", nuevoEmpleadoDTO);
+        } catch (ErrorCreacion e) {
+            throw new ErrorCreacion("Datos invalidos.");
+        } catch (DatosDucplicados e){
+            throw new DatosDucplicados("El usuario ya existe.");
         } catch (Exception e){
-            throw new errorServidor("Error interno del servidor.");
+            throw new ErrorServidor("Error interno del servidor.");
         }
     }
     
@@ -128,8 +132,10 @@ public class empleadoServiciosImpl implements empleadoServices {
      * @throws creacionFallida Si algún campo obligatorio está vacío.
      */
     @Override
-    public respuestaDTO<empleadoCreacionDTO> actualizaCompleto(UUID id, empleadoDTO empleadoDTO){
+    public RespuestaDTO<EmpleadoCreacionDTO> actualizaCompleto(UUID id, EmpleadoDTO empleadoDTO){
         try {
+             Empleado empleado = empleadoRepositorio.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontrado("Usuario no encontrado"));
             if(empleadoDTO.getNombre() == null
                 || empleadoDTO.getApellidoP() == null
                 || empleadoDTO.getNacimiento() == null
@@ -139,18 +145,19 @@ public class empleadoServiciosImpl implements empleadoServices {
                 || empleadoDTO.getUsuario() == null
                 || empleadoDTO.getContrasena() == null
             ){
-                throw new errorCreacion("Datos invalidos.");
+                throw new ErrorCreacion("Datos invalidos.");
             }
 
-            if (empleadoRepositorio.findByEmail(empleadoDTO.getCorreo()).isPresent()){
-                throw new datosDucplicados("El correo ya existe.");
+            Optional<Empleado> empleadoConEmail = empleadoRepositorio.findByCorreo(empleadoDTO.getCorreo());
+            if (empleadoConEmail.isPresent() && !empleadoConEmail.get().getId().equals(id)) {
+                throw new DatosDucplicados("El correo ya existe.");
             }
 
-            if(empleadoRepositorio.findByUsername(empleadoDTO.getUsuario()).isPresent()){
-                throw new datosDucplicados("El usuario ya existe.");
+            Optional<Empleado> empleadoConUsuario = empleadoRepositorio.findByUsuario(empleadoDTO.getUsuario());
+            if (empleadoConUsuario.isPresent() && !empleadoConUsuario.get().getId().equals(id)) {
+                throw new DatosDucplicados("El usuario ya existe.");
             }
 
-            empleado empleado = new empleado();
             empleado.setNombre(empleadoDTO.getNombre());
             empleado.setApellidoP(empleadoDTO.getApellidoP());
             empleado.setApellidoM(empleadoDTO.getApellidoM());
@@ -160,7 +167,9 @@ public class empleadoServiciosImpl implements empleadoServices {
             empleado.setTelefono(empleadoDTO.getTelefono());
             empleado.setCorreo(empleadoDTO.getCorreo());
             empleado.setUsuario(empleadoDTO.getUsuario());
-            empleado.setContrasena(null);
+            if (empleadoDTO.getContrasena() != null && !empleadoDTO.getContrasena().trim().isEmpty()) {
+                empleado.setContrasena(passwordEncoder.encode(empleadoDTO.getContrasena()));
+            }
             empleado.setEliminado(empleadoDTO.getEliminado());
             empleado.setCp(empleadoDTO.getCp());
             empleado.setEstado(empleadoDTO.getEstado());
@@ -172,7 +181,7 @@ public class empleadoServiciosImpl implements empleadoServices {
 
             empleado = empleadoRepositorio.save(empleado);
 
-            empleadoCreacionDTO nuevoEmpleadoDTO = new empleadoCreacionDTO();
+            EmpleadoCreacionDTO nuevoEmpleadoDTO = new EmpleadoCreacionDTO();
             nuevoEmpleadoDTO.setId(empleado.getId());
             nuevoEmpleadoDTO.setNombre(empleado.getNombre());
             nuevoEmpleadoDTO.setApellidoP(empleado.getApellidoP());
@@ -180,13 +189,13 @@ public class empleadoServiciosImpl implements empleadoServices {
             nuevoEmpleadoDTO.setCorreo(empleado.getCorreo());
             nuevoEmpleadoDTO.setUsuario(empleado.getUsuario());
 
-            return new respuestaDTO<empleadoCreacionDTO>(201, "Empleado actualizado correctamente.", nuevoEmpleadoDTO);
-        } catch (errorCreacion e) {
-            throw new errorCreacion("Datos invalidos.");
-        } catch (datosDucplicados e){
-            throw new datosDucplicados("El usuario ya existe.");
+            return new RespuestaDTO<EmpleadoCreacionDTO>(200, "Empleado actualizado correctamente.", nuevoEmpleadoDTO);
+        } catch (ErrorCreacion e) {
+            throw new ErrorCreacion("Datos invalidos.");
+        } catch (DatosDucplicados e){
+            throw new DatosDucplicados("El usuario ya existe.");
         } catch (Exception e){
-            throw new errorServidor("Error interno del servidor.");
+            throw new ErrorServidor("Error interno del servidor.");
         }
     }
 
@@ -203,5 +212,68 @@ public class empleadoServiciosImpl implements empleadoServices {
      */
     
     
+    @Override
+    public TokenDTO login(LoginDTO request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsuario(), request.getContrasena()));
 
+        Optional<Empleado> userOptional = empleadoRepositorio.findByUsuario(request.getUsuario());
+        if (userOptional.isEmpty()) {
+            throw new RecursoNoEncontrado("Credenciales inválidas");
+        }
+
+        String accessToken = jwtService.generateAccessToken(request.getUsuario());
+        String refreshToken = jwtService.generateRefreshToken(request.getUsuario());
+
+        return new TokenDTO(accessToken, refreshToken);
+    }
+
+    @Override
+    public TokenDTO refreshToken(RefreshTokenDTO request) {
+        String refreshToken = request.getRefreshToken();
+        String username = jwtService.extractUsername(refreshToken);
+        String jti = jwtService.extractClaim(refreshToken, Claims::getId);
+
+        Empleado user = empleadoRepositorio.findByUsuario(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        if (!jwtService.isTokenValid(refreshToken, user.getUsuario())) {
+            throw new BadCredentialsException("Refresh token inválido o expirado");
+        }
+
+        String newAccessToken = jwtService.generateAccessToken(username);
+        String newRefreshToken = jwtService.generateRefreshToken(username);
+
+        return TokenDTO.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .build();
+    }
+
+    @Override
+    public void logout(String token) {
+        String jti = jwtService.extractClaim(token, Claims::getId);
+        String username = jwtService.extractUsername(token);
+        
+        // Agregar token a lista negra
+        tokenBlacklist.addToBlacklist(jti, jwtService.extractExpiration(token));
+        
+        SecurityContextHolder.clearContext();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Empleado user = empleadoRepositorio.findByUsuario(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        // ¡Obligatorio! Spring Security requiere al menos una autoridad.
+        List<GrantedAuthority> authorities = Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_USER") // Prefijo "ROLE_" requerido para .hasRole()
+        );
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsuario(),
+                user.getContrasena(),
+                authorities);
+    }
 }

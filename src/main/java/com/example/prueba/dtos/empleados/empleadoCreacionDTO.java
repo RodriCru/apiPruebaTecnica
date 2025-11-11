@@ -6,7 +6,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class empleadoCreacionDTO {
+public class EmpleadoCreacionDTO {
     private UUID id;
     private String nombre;
     private String apellidoP;

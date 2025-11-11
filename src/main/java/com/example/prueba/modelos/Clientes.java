@@ -15,8 +15,8 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name="empleados")
-public class Empleado {
+@Table(name="clientes")
+public class Clientes {
     @Id
     @GeneratedValue
     private UUID id;
@@ -57,11 +57,6 @@ public class Empleado {
     @Size(min=1,max=60, message= "Longitud maxima de 60 cacracteres")
     private String correo;
 
-    @Column(name="usuario")
-    @NotBlank(message = "Usuario obligatorio.")
-    @Size(min=1,max=10, message= "Longitud maxima de 10 cacracteres.")
-    private String usuario;
-
     @Column(nullable = false, length = 255)
     private String contrasena;
 
@@ -94,4 +89,19 @@ public class Empleado {
 
     @Column(name="interior")
     private String interior;
+    
+    @Column(name="auto")
+    private String auto;
+
+    @Column(name="inicio_credito")
+    @NotNull
+    private LocalDate inicio_credito;
+
+    @Column(name="fin_credito")
+    @NotNull
+    private LocalDate fin_credito;
+
+    @Column(name="mensualidad")
+    private float mensualidad;
 }
+

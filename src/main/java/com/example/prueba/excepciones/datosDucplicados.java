@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class datosDucplicados extends RuntimeException {
-    public datosDucplicados(String mensaje){ super(mensaje);}
+public class DatosDucplicados extends RuntimeException {
+    public DatosDucplicados(String mensaje){ super(mensaje);}
 }

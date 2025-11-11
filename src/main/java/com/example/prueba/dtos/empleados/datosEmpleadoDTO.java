@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class datosEmpleadoDTO {
+public class DatosEmpleadoDTO {
     private String nombre;
     private String apellidoP;
     private String apellidoM;

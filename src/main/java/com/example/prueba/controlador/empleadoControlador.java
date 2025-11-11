@@ -10,30 +10,51 @@ import org.springframework.web.bind.annotation.*;
 import com.example.prueba.dtos.*;
 import com.example.prueba.dtos.empleados.*;
 import com.example.prueba.excepciones.*;
-import com.example.prueba.servicios.empleadoServices;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.example.prueba.servicios.EmpleadoServices;
 
 
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/profile")
-public class empleadoControlador {
-    empleadoServices empleadoServices;
+public class EmpleadoControlador {
+    private final EmpleadoServices empleadoServices;
 
-    @PostMapping
-    public ResponseEntity<respuestaDTO<empleadoCreacionDTO>> creaEmpleado(@RequestBody creaEmpleadoDTO creaEmpleadoDTO){
-        respuestaDTO<empleadoCreacionDTO> nuevoEmpleado = empleadoServices.creaEmpleado(creaEmpleadoDTO);
+    @PostMapping("/crear")
+    public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> creaEmpleado(@RequestBody CreaEmpleadoDTO creaEmpleadoDTO){
+        RespuestaDTO<EmpleadoCreacionDTO> nuevoEmpleado = empleadoServices.creaEmpleado(creaEmpleadoDTO);
         return new ResponseEntity<>(nuevoEmpleado,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<respuestaDTO<empleadoCreacionDTO>> actualizaCompleto(@PathVariable UUID id, @RequestBody empleadoDTO empleadoDTO){
-        respuestaDTO<empleadoCreacionDTO> actualizaEmpleado = empleadoServices.actualizaCompleto(id, empleadoDTO);
+    public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> actualizaCompleto(@PathVariable UUID id, @RequestBody EmpleadoDTO empleadoDTO){
+        RespuestaDTO<EmpleadoCreacionDTO> actualizaEmpleado = empleadoServices.actualizaCompleto(id, empleadoDTO);
         return new ResponseEntity<>(actualizaEmpleado, HttpStatus.OK);
     }
     
+
+    /**
+     * Este es el login para obtener los tokens
+     */
+    @PostMapping("/login")
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO request) {
+        TokenDTO tokenDTO = empleadoServices.login(request);
+        return ResponseEntity.ok(tokenDTO);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenDTO> refreshToken(@RequestBody RefreshTokenDTO request) {
+        TokenDTO tokenDTO = empleadoServices.refreshToken(request);
+        return ResponseEntity.ok(tokenDTO);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().build();
+        }
+        String token = authHeader.substring(7);
+        empleadoServices.logout(token);
+        return ResponseEntity.ok().build();
+    }
 }
