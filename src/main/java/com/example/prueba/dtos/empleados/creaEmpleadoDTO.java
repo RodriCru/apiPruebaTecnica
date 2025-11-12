@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO que ayuda a la creación, y actualización de un empleado.
  */
 @Data
 @AllArgsConstructor

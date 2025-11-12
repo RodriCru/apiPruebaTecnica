@@ -13,6 +13,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+/**
+ * Modelo del empleado, es el encargado de crear la tabla empleados en la BD
+ */
 @Data
 @Entity
 @Table(name="empleados")

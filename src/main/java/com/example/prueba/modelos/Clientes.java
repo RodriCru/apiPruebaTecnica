@@ -13,6 +13,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+/**
+ * Modelo del cliente, es el encargado de crear la tabla clientes en la BD
+ */
 @Data
 @Entity
 @Table(name="clientes")

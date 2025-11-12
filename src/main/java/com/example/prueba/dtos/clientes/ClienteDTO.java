@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO de un cliemte, sirve para el registro.
  */
 @Data
 @AllArgsConstructor

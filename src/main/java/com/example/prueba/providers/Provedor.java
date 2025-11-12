@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Es el encargado de autenticar las credenciales.
+ */
 @Service
 @RequiredArgsConstructor
 public class Provedor implements AuthenticationProvider {

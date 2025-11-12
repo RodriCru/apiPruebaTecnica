@@ -8,6 +8,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+/**
+ * Clase para trabajar con la interfaz de Swagger.
+ */
 @Configuration
 public class Swagger {
     @Bean

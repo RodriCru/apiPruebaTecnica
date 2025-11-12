@@ -15,12 +15,18 @@ import com.example.prueba.modelos.Clientes;
 import com.example.prueba.repositorio.ClienteRepositorio;
 import com.example.prueba.servicios.ClienteServices;
 
+/**
+ * Clase encargada de los servicios de los clientes.
+ */
 @Service
 @RequiredArgsConstructor
 public class ClienteServiciosImpl implements ClienteServices{
     
     private final ClienteRepositorio clienteRepositorio;
 
+    /**
+     * Servicio que crea el cliente.
+     */
     @Override
     public RespuestaDTO<ClienteCreacionDTO> creaCliente(CreaClienteDTO clienteDTO){
         try {
@@ -81,6 +87,9 @@ public class ClienteServiciosImpl implements ClienteServices{
         }
     }
 
+    /**
+     * Servicio que obtiene la lista de un cliente.
+     */
     @Override
     public RespuestaDTO<ListaDTO> obtenerClientes(int page, int limit){
 
@@ -124,6 +133,9 @@ public class ClienteServiciosImpl implements ClienteServices{
         }
     }
 
+    /**
+     * SErviio que actualiza un cliente parcialmente.
+     */
     @Override
     public RespuestaDTO<ClienteCreacionDTO> actualizaClienteParcial(UUID id, ClienteDTO clienteDTO){
 
@@ -201,6 +213,9 @@ public class ClienteServiciosImpl implements ClienteServices{
         }
     }
 
+    /**
+     * SErvicio que elimina un cliente.
+     */
     @Override
         public RespuestaDTO<EliminarClienteDTO> eliminarCliente(UUID id) {
         try {

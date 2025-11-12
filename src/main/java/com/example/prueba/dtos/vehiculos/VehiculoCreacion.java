@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 /**
- * 
+ * DTO que ayuda a la respuesta despues de crear un nuevo vehiculo.
  */
 @Data
 @AllArgsConstructor

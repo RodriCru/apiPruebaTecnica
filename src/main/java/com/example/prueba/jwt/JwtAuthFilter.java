@@ -14,12 +14,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Este es el encargado de hacer el filtro de los tokens y ver que funcione correctamente.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final ServicioJwt jwtService; // nombre corregido
-    private final UserDetailsService userDetailsService; // inyectamos el servicio de usuarios
+    private final ServicioJwt jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

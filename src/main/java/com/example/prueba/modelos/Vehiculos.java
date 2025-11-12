@@ -11,6 +11,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+/**
+ * Modelo del vehiculo, es el encargado de crear la tabla vehiculos en la BD
+ */
 @Data
 @Entity
 @Table(name="vehiculos")

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO que ayuda para crear, actualizar completamente un cliente.
  */
 @Data
 @AllArgsConstructor

@@ -3,6 +3,9 @@ package com.example.prueba.dtos.empleados;
 import java.util.UUID;
 import lombok.*;
 
+/**
+ * Este DTO ayuda a la respuesta después de crear un nuevo empleado.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

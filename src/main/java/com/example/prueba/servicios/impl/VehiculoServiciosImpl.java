@@ -14,6 +14,9 @@ import com.example.prueba.modelos.Vehiculos;
 import com.example.prueba.repositorio.VehiculosRepository;
 import com.example.prueba.servicios.VehiculoServices;
 
+/**
+ * Servicios implementados para los vehiculos
+ */
 @Service
 @RequiredArgsConstructor
 public class VehiculoServiciosImpl implements VehiculoServices {

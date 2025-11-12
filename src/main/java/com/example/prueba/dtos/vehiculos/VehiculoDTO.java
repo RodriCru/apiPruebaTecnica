@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.UUID;
 
 /**
- * 
+ * DTO para almacenar los datos en la BD.
  */
 @Data
 @AllArgsConstructor

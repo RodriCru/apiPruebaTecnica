@@ -4,6 +4,9 @@ import com.example.prueba.dtos.*;
 import com.example.prueba.dtos.vehiculos.*;
 import java.util.UUID;
 
+/**
+ * Definición de los servicios que tendran los vehiculos.
+ */
 public interface VehiculoServices {
 
     RespuestaDTO<ListaVehiculosDTO> obtenerVehiculos(int page, int limite, String sort, String order, String estatus, Boolean vendido, Boolean eliminado);

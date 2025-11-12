@@ -29,6 +29,10 @@ contraseña: admin123
 
 Y como respuesta obtendras los tokens para acceder a los demas endpoints, en Swagger hasta arriba de lado izquierdo esta una opción que se llama "Authorize", da clic en esa opción y solo pega el accesToken y ya podras hacer las peticiones sin problema.
 
+Toma en cuenta que el accessToken tiene una duración de 15 minutos 
+
+El RefreshToken una duración de 30 minutos.
+
 ## Paso 6
 Para parar el api, ve a tu terminal donde se esten los logs y presiona ctrl+C y en seguida el contendor se detiene.
 

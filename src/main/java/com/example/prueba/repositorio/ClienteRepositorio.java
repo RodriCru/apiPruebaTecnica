@@ -10,7 +10,7 @@ import java.util.List;
 
 
 /**
- * Interfaz que define el repositorio para la entidad usuario, que 
+ * Interfaz que define el repositorio para la entidad cliente, que 
  * extiende {@link JpaRepository} de Spring Data JPA, proporcionando métodos CRUD
  * y operaciones de paginación y ordenación para la entidad User.
  * 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public interface ClienteRepositorio extends JpaRepository<Clientes,UUID> {
     /**
-     * Busca el email que se ah proporcionado
+     * Busca el correo que se ah proporcionado
      * @param correo del usurio
      * @return regresa el email y se entiende que existe
      */

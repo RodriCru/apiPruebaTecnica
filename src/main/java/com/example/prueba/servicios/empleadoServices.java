@@ -6,14 +6,24 @@ import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+/**
+ * Definición de los servicios que tendran los empleados
+ */
 public interface EmpleadoServices {
+    /**
+     * Crea un empleado
+     * @param creaEmpleadoDTO
+     * @return mensaje de exito
+     */
     RespuestaDTO<EmpleadoCreacionDTO> creaEmpleado(CreaEmpleadoDTO creaEmpleadoDTO);
 
+    /**
+     * Muestra los datos del usuario logueado.
+     * @return datos del usuario.
+     */
     RespuestaDTO<EmpleadoCreacionDTO> obtenerPerfilActual();
 
     RespuestaDTO<EmpleadoCreacionDTO>actualizaCompleto(UUID id, EmpleadoDTO empleadoDTO);
-
-    //respuestaDTO<datosEmpleadoDTO> misdatos(String user);
 
     /**
      * Este es el metodo que usan los tokens

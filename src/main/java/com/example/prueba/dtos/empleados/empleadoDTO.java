@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO para guardar los datos en la BD.
  */
 @Data
 @AllArgsConstructor

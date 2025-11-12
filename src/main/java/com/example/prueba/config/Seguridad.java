@@ -14,6 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Esta clase se encarga de la seguridad de proteger los endpoints que tendran tokens
+ * y definir cuales seran de acceso libre, por ejemplo el swagger, el login asi como el refresh.
+ */
 @EnableMethodSecurity
 @Configuration
 @RequiredArgsConstructor

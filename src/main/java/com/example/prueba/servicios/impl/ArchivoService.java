@@ -8,10 +8,18 @@ import com.example.prueba.excepciones.ErrorServidor;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
+/**
+ * Clase encargada de la carga de archivos
+ */
 @Service
 @Slf4j
 public class ArchivoService {
 
+    /**
+     * Se carga un pdf o excel y debe de extraer un pdf o el rfc
+     * @param file archivo excel o pdf
+     * @return la palabra extraida.
+     */
     public RespuestaDTO<String> procesarArchivo(MultipartFile file) {
         try {
             if (file.isEmpty()) {

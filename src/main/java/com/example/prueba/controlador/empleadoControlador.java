@@ -19,18 +19,33 @@ import com.example.prueba.servicios.EmpleadoServices;
 public class EmpleadoControlador {
     private final EmpleadoServices empleadoServices;
 
+    /**
+     * Crea un nuevo empleado
+     * @param creaEmpleadoDTO parámetros que debe de llevar un empleado nuevo
+     * @return un mesaje de exito.
+     */
     @PostMapping("/crear")
     public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> creaEmpleado(@RequestBody CreaEmpleadoDTO creaEmpleadoDTO){
         RespuestaDTO<EmpleadoCreacionDTO> nuevoEmpleado = empleadoServices.creaEmpleado(creaEmpleadoDTO);
         return new ResponseEntity<>(nuevoEmpleado,HttpStatus.CREATED);
     }
 
+    /**
+     * Obtiene los datos del mismo usuario logueado.
+     * @return parámetros del empelado.
+     */
     @GetMapping
     public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> obtenerPerfil() {
         RespuestaDTO<EmpleadoCreacionDTO> respuesta = empleadoServices.obtenerPerfilActual();
         return ResponseEntity.ok(respuesta);
     }
 
+    /**
+     * Actualiza completamente un Empleado.
+     * @param id identificador unico del empleado.
+     * @param empleadoDTO parámetros a editar del empleado.
+     * @return mensaje de exito con un código 200.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> actualizaCompleto(@PathVariable UUID id, @RequestBody EmpleadoDTO empleadoDTO){
         RespuestaDTO<EmpleadoCreacionDTO> actualizaEmpleado = empleadoServices.actualizaCompleto(id, empleadoDTO);
@@ -39,7 +54,9 @@ public class EmpleadoControlador {
     
 
     /**
-     * Este es el login para obtener los tokens
+     * Inicio de sesión
+     * @param request usurio y contraseña y que existan en la base de datos.
+     * @return acces token y un refresh token.
      */
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO request) {
@@ -47,12 +64,22 @@ public class EmpleadoControlador {
         return ResponseEntity.ok(tokenDTO);
     }
 
+    /**
+     * Si el accessToken expira, solicita uno nuevo
+     * @param request refreshToken
+     * @return un AccessToken
+     */
     @PostMapping("/refresh")
     public ResponseEntity<TokenDTO> refreshToken(@RequestBody RefreshTokenDTO request) {
         TokenDTO tokenDTO = empleadoServices.refreshToken(request);
         return ResponseEntity.ok(tokenDTO);
     }
 
+    /**
+     * Cierre de sesión para el empledo
+     * @param authHeader
+     * @return una vez terminada la sesión el token se invalida.
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

@@ -4,6 +4,9 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Una vez que el usuario hizo logout esta clase invalida el token.
+ */
 @Component
 public class TokenBlacklist {
     

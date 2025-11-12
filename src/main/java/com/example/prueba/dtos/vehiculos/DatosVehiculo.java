@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 /**
- * 
+ * DTO que ayuda a mostrar los datos de un auto ya sea por bisqieda o lista.
  */
 @Data
 @AllArgsConstructor

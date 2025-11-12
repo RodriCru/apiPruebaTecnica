@@ -17,7 +17,7 @@ public interface EmpleadoRepositorio extends JpaRepository<Empleado,UUID> {
     Optional<Empleado> findByCorreo(String email);
 
     /**
-     * Busca el username del usuario
+     * Busca el usuario del usuario
      * @param username del usuario
      * @return regresa el username del usuario y se valida que existe
      */

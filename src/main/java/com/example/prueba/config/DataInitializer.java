@@ -1,3 +1,7 @@
+/**
+ * Esta clase crea un usaurio para poder acceder al api y obtener tokens
+ * y hacer funcionar el api.
+ */
 package com.example.prueba.config;
 
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO que ayuda a que sean visibles los datos de un empleado.
  */
 @Data
 @AllArgsConstructor

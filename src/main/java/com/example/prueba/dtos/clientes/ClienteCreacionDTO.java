@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 /**
- * 
+ * DTO que funciona para la respuesta despues de crear un cliente.
  */
 @Data
 @AllArgsConstructor

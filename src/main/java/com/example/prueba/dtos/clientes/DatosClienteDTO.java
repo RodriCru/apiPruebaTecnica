@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 /**
- * 
+ * DTO que ayuda a ver los datos de un cliente cuando se solicita una lista.
  */
 @Data
 @AllArgsConstructor
