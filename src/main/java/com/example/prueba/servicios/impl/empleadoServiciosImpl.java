@@ -1,7 +1,5 @@
 package com.example.prueba.servicios.impl;
 
-import org.springframework.data.domain.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.security.Principal;
-import java.time.OffsetDateTime;
 import com.example.prueba.dtos.*;
 import com.example.prueba.dtos.empleados.*;
 import com.example.prueba.excepciones.*;
