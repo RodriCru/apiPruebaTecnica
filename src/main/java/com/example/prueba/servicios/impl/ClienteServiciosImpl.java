@@ -55,9 +55,9 @@ public class ClienteServiciosImpl implements ClienteServices{
             cliente.setExt(clienteDTO.getExt());
             cliente.setInterior(clienteDTO.getInterior());
             cliente.setAuto(clienteDTO.getAuto());
-            cliente.setInicio_credito(cliente.getInicio_credito());
-            cliente.setFin_credito(cliente.getFin_credito());
-            cliente.setMensualidad(cliente.getMensualidad());
+            cliente.setInicio_credito(clienteDTO.getInicio_credito());
+            cliente.setFin_credito(clienteDTO.getFin_credito());
+            cliente.setMensualidad(clienteDTO.getMensualidad());
 
             cliente = clienteRepositorio.save(cliente);
 
@@ -202,24 +202,24 @@ public class ClienteServiciosImpl implements ClienteServices{
     }
 
     @Override
-        public RespuestaDTO<EliminarClienteDTO> eliminarCliente(UUID id){
-            try{
-                Clientes cliente = clienteRepositorio.findById(id)
-                  .orElseThrow(() -> new RecursoNoEncontrado("Usuario no Encontrado"));
+        public RespuestaDTO<EliminarClienteDTO> eliminarCliente(UUID id) {
+        try {
+            Clientes cliente = clienteRepositorio.findById(id)
+                    .orElseThrow(() -> new RecursoNoEncontrado("Usuario no Encontrado"));
 
-                cliente.setEliminado(true);
-                  
-                cliente = clienteRepositorio.save(cliente);
+            cliente.setEliminado(true);
 
-                EliminarClienteDTO eliminado = new EliminarClienteDTO();
-                eliminado.setEliminado(cliente.getEliminado());
+            cliente = clienteRepositorio.save(cliente);
 
-                return new RespuestaDTO<EliminarClienteDTO>(200, "Usuario eliminado", eliminado);
-            }catch(RecursoNoEncontrado e){
-                throw new RecursoNoEncontrado("Usuario no encontrado");
-            } catch (Exception e) {
-                throw new ErrorServidor("Error interno del servidor.");
-            }
+            EliminarClienteDTO eliminado = new EliminarClienteDTO();
+            eliminado.setEliminado(cliente.getEliminado());
+
+            return new RespuestaDTO<EliminarClienteDTO>(200, "Usuario eliminado", eliminado);
+        } catch (RecursoNoEncontrado e) {
+            throw new RecursoNoEncontrado("Usuario no encontrado");
+        } catch (Exception e) {
+            throw new ErrorServidor("Error interno del servidor.");
         }
+    }
     
 }

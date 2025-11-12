@@ -108,6 +108,32 @@ public class EmpleadoServiciosImpl implements EmpleadoServices {
             throw new ErrorServidor("Error interno del servidor.");
         }
     }
+
+    @Override
+    public RespuestaDTO<EmpleadoCreacionDTO> obtenerPerfilActual() {
+        try {
+            // 1. Obtener el usuario autenticado del contexto de seguridad
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            Empleado empleado = empleadoRepositorio.findByUsuario(username)
+                    .orElseThrow(() -> new RecursoNoEncontrado("Usuario autenticado no encontrado."));
+
+            // 2. Mapear al DTO de respuesta
+            EmpleadoCreacionDTO perfil = new EmpleadoCreacionDTO();
+            perfil.setId(empleado.getId());
+            perfil.setNombre(empleado.getNombre());
+            perfil.setApellidoP(empleado.getApellidoP());
+            perfil.setApellidoM(empleado.getApellidoM());
+            perfil.setCorreo(empleado.getCorreo());
+            perfil.setUsuario(empleado.getUsuario());
+
+            return new RespuestaDTO<>(200, "Perfil obtenido correctamente.", perfil);
+
+        } catch (Exception e) {
+            throw new ErrorServidor("Error al obtener el perfil del usuario.");
+        }
+    }
+
     
     /**
      * Actualiza un empleado a partir de su Id.

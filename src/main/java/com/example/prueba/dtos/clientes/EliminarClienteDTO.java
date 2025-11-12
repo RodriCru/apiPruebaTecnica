@@ -3,7 +3,6 @@ package com.example.prueba.dtos.clientes;
 import lombok.*;
 
 import java.util.UUID;
-import java.time.OffsetDateTime;
 
 /**
  * Esta clase representa el DTO de la entidad usuario

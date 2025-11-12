@@ -26,7 +26,7 @@ public class Seguridad {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/profile/login", "/swagger-ui.html", "/v3/api-docs/**","/swagger-ui/**","/error","/api/users/refresh").permitAll()
+                        .requestMatchers("/api/profile/login", "/swagger-ui.html", "/v3/api-docs/**","/swagger-ui/**","/error","/api/profile/refresh").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

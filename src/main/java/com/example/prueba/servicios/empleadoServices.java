@@ -1,6 +1,5 @@
 package com.example.prueba.servicios;
 
-import com.example.prueba.dtos.RespuestaDTO;
 import com.example.prueba.dtos.empleados.*;
 import com.example.prueba.dtos.*;
 import java.util.UUID;
@@ -9,6 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface EmpleadoServices {
     RespuestaDTO<EmpleadoCreacionDTO> creaEmpleado(CreaEmpleadoDTO creaEmpleadoDTO);
+
+    RespuestaDTO<EmpleadoCreacionDTO> obtenerPerfilActual();
 
     RespuestaDTO<EmpleadoCreacionDTO>actualizaCompleto(UUID id, EmpleadoDTO empleadoDTO);
 

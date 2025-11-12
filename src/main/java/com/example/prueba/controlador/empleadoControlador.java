@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.prueba.dtos.*;
 import com.example.prueba.dtos.empleados.*;
-import com.example.prueba.excepciones.*;
 import com.example.prueba.servicios.EmpleadoServices;
 
 
@@ -24,6 +23,12 @@ public class EmpleadoControlador {
     public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> creaEmpleado(@RequestBody CreaEmpleadoDTO creaEmpleadoDTO){
         RespuestaDTO<EmpleadoCreacionDTO> nuevoEmpleado = empleadoServices.creaEmpleado(creaEmpleadoDTO);
         return new ResponseEntity<>(nuevoEmpleado,HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<RespuestaDTO<EmpleadoCreacionDTO>> obtenerPerfil() {
+        RespuestaDTO<EmpleadoCreacionDTO> respuesta = empleadoServices.obtenerPerfilActual();
+        return ResponseEntity.ok(respuesta);
     }
 
     @PutMapping("/{id}")

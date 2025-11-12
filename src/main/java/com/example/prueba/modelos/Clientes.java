@@ -57,9 +57,6 @@ public class Clientes {
     @Size(min=1,max=60, message= "Longitud maxima de 60 cacracteres")
     private String correo;
 
-    @Column(nullable = false, length = 255)
-    private String contrasena;
-
     @Column(name="eliminado")
     private Boolean eliminado;
 
