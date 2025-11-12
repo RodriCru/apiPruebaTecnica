@@ -24,6 +24,7 @@ Veras la interfaz de swagger con los endpoints del API.
 Ve al endpoint /api/profile/login   e ingresa las siguientes claves
 
 usuario: admin
+
 contraseña: admin123
 
 Y como respuesta obtendras los tokens para acceder a los demas endpoints, en Swagger hasta arriba de lado izquierdo esta una opción que se llama "Authorize", da clic en esa opción y solo pega el accesToken y ya podras hacer las peticiones sin problema.
